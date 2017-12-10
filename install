@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cat nc-picsort > /etc/cron.hourly/nc-picsort
+chmod +x /etc/cron.hourly/nc-picsort
+systemctl restart cron.service
+
+echo OK
