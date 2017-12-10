@@ -27,7 +27,7 @@ for f in `find "$SOURCEPATH" -iname *.JPG -o -iname *.CR2 -o -iname *.MP4 -o -in
 done
 
 if  [ "$SCAN" == "TRUE" ]; then
+  find "$SOURCEPATH" -type d -empty -delete
   sudo -u www-data php /var/www/nextcloud/occ files:scan $USER
   sudo -u www-data php /var/www/nextcloud/occ preview:generate-all $USER
-  find "$SOURCEPATH" -type d -empty -delete
 fi
