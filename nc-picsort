@@ -4,6 +4,9 @@ SOURCEPATH="/var/lib/nextcloud/ckn/files/SofortUpload/AutoSort/"
 DESTINATIONPATH="/var/lib/nextcloud/ckn/files/Bilder/Chronologie/"
 USER="ckn"
 
+if ls /tmp/nc-picsort.ru; then echo "allready running"; exit 0; fi
+echo 1 > /tmp/nc-picsort.run
+
 SCAN="FALSE"
 IFS=$'\n'
 for f in `find "$SOURCEPATH" -iname *.JPG -o -iname *.CR2 -o -iname *.MP4 -o -iname *.MOV`; do
@@ -29,3 +32,5 @@ if  [ "$SCAN" == "TRUE" ]; then
   sudo -u www-data php /var/www/nextcloud/occ preview:generate-all $USER
   find "$SOURCEPATH" -type d -empty -delete
 fi
+
+rm /tmp/nc-picsort.run
