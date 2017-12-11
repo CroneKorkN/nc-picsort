@@ -24,6 +24,7 @@ for f in `find "$SOURCEPATH" -iname *.JPG -o -iname *.CR2 -o -iname *.MP4 -o -in
   FILE="$DESTINATIONPATH/$YEAR-$MONTH/$RAW$YEAR$MONTH$DAY"-"$HOUR$MINUTE$SECOND"_"$HASH"."$EXT"
   mkdir -p "$(dirname "$FILE")"
   mv -v "$f" "$FILE"
+  echo "$f $FILE" >> /var/log/nc-picsort.log
 done
 
 if  [ "$SCAN" == "TRUE" ]; then
