@@ -28,6 +28,8 @@ done
 
 if  [ "$SCAN" == "TRUE" ]; then
   find "$SOURCEPATH" -type d -empty -delete
+  chown -R www-data:www-data "$DESTINATIONPATH"
+  chmod -R 777 "$DESTINATIONPATH"
   sudo -u www-data php /var/www/nextcloud/occ files:scan $USER
   sudo -u www-data php /var/www/nextcloud/occ preview:generate-all $USER
 fi
