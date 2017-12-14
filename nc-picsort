@@ -4,7 +4,9 @@ SOURCEPATH="/var/lib/nextcloud/ckn/files/SofortUpload/AutoSort/"
 DESTINATIONPATH="/var/lib/nextcloud/ckn/files/Bilder/Chronologie/"
 USER="ckn"
 
-if ps aux | grep cron | grep nc-picsort; then echo "EXIT: still running"; exit 0; fi
+if ps aux | grep cron | grep nc-picsort | grep -v $$; then echo "EXIT: still running"; exit 0; fi
+
+date >> /var/log/nc-picsort.log
 
 SCAN="FALSE"
 IFS=$'\n'
@@ -28,9 +30,9 @@ for f in `find "$SOURCEPATH" -iname *.JPG -o -iname *.CR2 -o -iname *.MP4 -o -in
 done
 
 if  [ "$SCAN" == "TRUE" ]; then
-  find "$SOURCEPATH" -type d -empty -delete
+  find "$SOURCEPATH" -type d -empty -delete >> /var/log/nc-picsort.log
   chown -R www-data:www-data "$DESTINATIONPATH"
   chmod -R 777 "$DESTINATIONPATH"
-  sudo -u www-data php /var/www/nextcloud/occ files:scan $USER
-  sudo -u www-data php /var/www/nextcloud/occ preview:generate-all $USER
+  sudo -u www-data php /var/www/nextcloud/occ files:scan $USER >> /var/log/nc-picsort.log
+  sudo -u www-data php /var/www/nextcloud/occ preview:generate-all $USER >> /var/log/nc-picsort.log
 fi
